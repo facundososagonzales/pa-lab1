@@ -3,15 +3,17 @@
 
 #include<iostream>
 #include "../dataTypes/DtFecha.h"
+#include "../class/Barco.h"
 
 class Arribo
 {
 private:
     DtFecha fecha;
     float carga;
+    Barco* barco;
 public:
     Arribo();
-    Arribo(DtFecha,float);
+    Arribo(DtFecha,float, Barco*);
 
     DtFecha getfecha();
     void setfecha(DtFecha fecha);
