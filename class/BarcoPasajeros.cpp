@@ -23,6 +23,8 @@ TipoTamanio BarcoPasajeros::gettipoTamanio() {
     return this->tamanio;
 }
 
+void BarcoPasajeros::arribar() {}
+
 BarcoPasajeros::~BarcoPasajeros(){}
 
 

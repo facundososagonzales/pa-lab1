@@ -18,6 +18,8 @@ public:
     void settamanio(TipoTamanio);
     TipoTamanio gettipoTamanio();
 
+    void arribar();
+
     ~BarcoPasajeros();
 };
 

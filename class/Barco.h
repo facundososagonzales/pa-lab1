@@ -20,7 +20,9 @@ public:
     string getid();
     void setid(string);
 
-    virtual ~Barco();
+    virtual void arribar()=0;
+
+    ~Barco();
 };
 
 #endif

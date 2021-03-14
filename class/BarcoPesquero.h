@@ -17,6 +17,8 @@ public:
     void setcarga(int);
     int getcarga();
 
+    void arribar(float cargaDespacho);
+
     ~BarcoPesquero();
 };
 
