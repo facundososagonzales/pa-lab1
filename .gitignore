@@ -2,6 +2,7 @@
 *.bin
 .git/
 *.o
-c
 *.exe
+exe
+exen
 *.zip
