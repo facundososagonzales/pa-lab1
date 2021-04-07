@@ -23,7 +23,7 @@ int BarcoPesquero::getcarga(){
     return this->carga;
 }
 
-void BarcoPesquero::arribar(float cargaDespacho) {}
+void BarcoPesquero::arribar() {}
 
 BarcoPesquero::~BarcoPesquero(){}
 
