@@ -24,6 +24,9 @@ void Arribo::setcarga(float carga) {
     this->carga=carga;
 }
 
+Barco* Arribo::getBarco(){
+    return this->barco;
+}
 
 
 Arribo::~Arribo(){}

@@ -32,7 +32,7 @@ DtPuerto::~DtPuerto(){}
 ostream& operator <<(ostream& salida, const DtPuerto& dtb){
 	cout << "id: " << dtb.id << "\n" 
 		"nombre: " << dtb.nombre << "\n"
-        "Fecha de creacion: " << dtb.fechaCreacion << "\n"
+        "Fecha de creacion: " << dtb.fechaCreacion <<
         "Cantidad de arribos: " << dtb.cantArribos << endl;
 	return salida;
 }

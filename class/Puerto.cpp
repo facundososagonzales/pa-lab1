@@ -39,11 +39,21 @@ Arribo* Puerto::getArribo(int topeA) {
 
 void Puerto::addToArribos(Arribo *a) {
     this->arribos[this->topeA]=a;
-    this->topeA = this->topeA++;
+    this->topeA++;
 }
 
 int Puerto::getTope() {
     return this->topeA;
+}
+
+void Puerto::setTope(int topeA){
+    this->topeA=topeA;
+}
+
+void Puerto::eliminarArribo(int n, Arribo* a){
+    delete this->arribos[n];
+    this->arribos[n]=a;
+    this->topeA--;
 }
 
 Puerto::~Puerto(){}

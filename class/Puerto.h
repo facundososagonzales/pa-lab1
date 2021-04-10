@@ -33,7 +33,8 @@ public:
     Arribo * getArribo(int);
     void addToArribos(Arribo*);
     int getTope();
-
+    void setTope(int);
+    void eliminarArribo(int n, Arribo* a);
     
     ~Puerto();
 
