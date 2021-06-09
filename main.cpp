@@ -57,6 +57,7 @@ void PuertoExiste(string id);
 
 void obtenerInfoArribosEnPuerto();
 void verificarPuerto(string id_Puerto);
+void noExistePuerto();
 DtArribo** obtenerInfoArribosEnPuerto(string id_Puerto);
 
 ////////////////////////////////////////////> Operaciones F <//////////////////////////////////////////////////
@@ -321,7 +322,7 @@ void listarPuertos(){
 	}
 
 	for (int i = 0; i < cP.topePuertos; i++) {
-		cout << *lp[i];
+		cout << *lp[i] << endl;
 	}
 
 }
@@ -336,36 +337,43 @@ void agregarArribo(){
 
 	string id_Barco; string id_Puerto;
 	bool condicion=false;
-
-	while (!condicion){
-		cout << "Ingrese el id del Puerto al que se va a arribar: ";
-		cin >> id_Puerto;
-		try{
-			PuertoExiste(id_Puerto);
-			condicion=true;
-		}catch (invalid_argument& e){
-			cout << e.what() << endl;
+	if (cP.topePuertos == 0) {
+		cout << "No existe ningun puerto en el sistema" << endl;
+	}else if (cB.topeBarcos == 0){
+		cout << "No existe ningun barco en el sistema para realizar un arribo" << endl;
+	}else {
+		while (!condicion) {
+			cout << "Ingrese el id del Puerto al que se va a arribar: ";
+			cin >> id_Puerto;
+			try {
+				PuertoExiste(id_Puerto);
+				condicion = true;
+			}
+			catch (invalid_argument& e) {
+				cout << e.what() << endl;
+			}
 		}
-	}
-	condicion=false;
+		condicion = false;
 
-	while (!condicion){
-		cout << "Ingrese el id del Barco que desea arribar: ";
-		cin >> id_Barco;
-		try{
-			BarcoExiste(id_Barco);
-			condicion=true;
-		}catch (invalid_argument& e){
-			cout << e.what() << endl;
+		while (!condicion) {
+			cout << "Ingrese el id del Barco que desea arribar: ";
+			cin >> id_Barco;
+			try {
+				BarcoExiste(id_Barco);
+				condicion = true;
+			}
+			catch (invalid_argument& e) {
+				cout << e.what() << endl;
+			}
 		}
+
+		float carga_A_Despachar;
+		cout << "Ingresar carga a despachar, en caso de barco pasajero ingresar 0: ";
+		cin >> carga_A_Despachar;
+
+		agregarArribo(id_Puerto, id_Barco, carga_A_Despachar);
+		cout << "El arribo ha sido completado" << endl;
 	}
-
-	float carga_A_Despachar;
-	cout << "Ingresar carga a despachar, en caso de pesquero ingresar 0: ";
-	cin >> carga_A_Despachar;
-
-	agregarArribo(id_Puerto,id_Barco,carga_A_Despachar);
-
 }
 
 void agregarArribo(string id_Puerto, string id_Barco, float carga_A_Despachar){
@@ -397,7 +405,7 @@ void agregarArribo(string id_Puerto, string id_Barco, float carga_A_Despachar){
 				Arribo* arribo = new Arribo(dtf,carga_A_Despachar,b_pasajero);
 				cP.Puertos[i_Puerto]->addToArribos(arribo);
 			}else{
-				throw invalid_argument ("La carga a despachar del barco de pasajeros no es 0");
+				throw invalid_argument ("La carga a despachar del barco de pasajeros debe ser 0");
 			}
 		}catch (invalid_argument& e){
 			cout << e.what() << endl;
@@ -453,37 +461,49 @@ void PuertoExiste(string id){
 			cont++;
 	}
 	if (!verificar)
-		throw invalid_argument ("El Puerto que se intenta ingresar no existe en el sistema");
+		throw invalid_argument ("El Puerto que intenta ingresar no existe en el sistema");
 }
 
 ////////////////////////////////////////////> Operaciones E <//////////////////////////////////////////////////
 
-void obtenerInfoArribosEnPuerto(){
+void obtenerInfoArribosEnPuerto() {
 	system("clear");
-	cout <<"_____________________________________________" <<endl;
-	cout <<"______________ OBTENER ARRIBOS_______________"<< endl;
-	cout <<"_____________________________________________" <<endl;
+	cout << "_____________________________________________" << endl;
+	cout << "______________ OBTENER ARRIBOS_______________" << endl;
+	cout << "_____________________________________________" << endl;
 	string id_Puerto;
-	cout << endl << "Ingrese el ID del puerto: ";
-	cin >> id_Puerto;
-	try{
-		verificarPuerto(id_Puerto);
-	}catch (invalid_argument& e){
-		cout << e.what() << endl;
-	}
-	DtArribo** dtArribos = obtenerInfoArribosEnPuerto(id_Puerto);
+	bool condicion = false;
 
-	bool verificar=false;
-	int i_Puerto=0;
-	while ((i_Puerto<cP.topePuertos) && (!verificar)){
-		if (cP.Puertos[i_Puerto]->getid()==id_Puerto){
-			verificar=true;
-		}else
-			i_Puerto++;
-	}
+	if (cP.topePuertos == 0){
+		cout << "No existe ningun puerto en el sistema" << endl;
+	}else{
+		while (!condicion) {
+			cout << endl << "Ingrese el ID del puerto: ";
+			cin >> id_Puerto;
+			try {
+				verificarPuerto(id_Puerto);
+				condicion = true;
+			}
+			catch (invalid_argument& e) {
+				cout << e.what() << endl;
+			}
+		}
 
-	for(int i=0; i<cP.Puertos[i_Puerto]->getTope();i++){
-		cout << *dtArribos[i];
+		DtArribo** dtArribos = obtenerInfoArribosEnPuerto(id_Puerto);
+
+		bool verificar = false;
+		int i_Puerto = 0;
+		while ((i_Puerto < cP.topePuertos) && (!verificar)) {
+			if (cP.Puertos[i_Puerto]->getid() == id_Puerto) {
+				verificar = true;
+			}
+			else
+				i_Puerto++;
+		}
+
+		for (int i = 0; i < cP.Puertos[i_Puerto]->getTope(); i++) {
+			cout << *dtArribos[i];
+		}
 	}
 }
 
@@ -500,6 +520,10 @@ void verificarPuerto(string id_Puerto){
 		throw invalid_argument ("El puerto ingresado no existe en el sistema");
 }
 
+void noExistePuerto(){
+	throw invalid_argument("No existe ningun puerto en el sistema");
+}
+
 DtArribo** obtenerInfoArribosEnPuerto(string id_Puerto){
 	bool verificar=false;
 	int i_Puerto=0;
@@ -511,6 +535,9 @@ DtArribo** obtenerInfoArribosEnPuerto(string id_Puerto){
 	}
 
 	DtArribo** dtArribos = new DtArribo* [cP.Puertos[i_Puerto]->getTope()];
+
+	if (cP.Puertos[i_Puerto]->getTope() == 0)
+		cout << "El puerto ingresado no tiene arribos" << endl;
 
 	for (int i=0; i<cP.Puertos[i_Puerto]->getTope(); i++){
 		Arribo* arribo = cP.Puertos[i_Puerto]->getArribo(i);
@@ -540,47 +567,79 @@ void eliminarArribos(){
 	cout <<"_______________ELIMINAR ARRIBO_______________"<< endl;
 	cout <<"_____________________________________________" <<endl;
 	string id_Puerto;
-	cout << endl << "Ingrese el ID del puerto: ";
-	cin >> id_Puerto;
-	try{
-		verificarPuerto(id_Puerto);
-	}catch (invalid_argument& e){
-		cout << e.what() << endl;
+	bool condicion = false;
+
+	if (cP.topePuertos == 0) {
+		cout << "No existe ningun puerto en el sistema" << endl;
 	}
-
-	bool verificar=false;
-	int i_Puerto=0;
-	while ((i_Puerto<cP.topePuertos) && (!verificar)){
-		if (cP.Puertos[i_Puerto]->getid()==id_Puerto){
-			verificar=true;
-		}else
-			i_Puerto++;
-	}
-
-	int dia, mes, anio;
-	cout <<"Ingrese el dia: "; cin >> dia;
-	cout <<"Ingrese el mes: "; cin >> mes;
-	cout <<"Ingrese el año: "; cin >> anio;
-	DtFecha fecha_Ing = DtFecha(dia,mes,anio);
-
-	int cont=0;
-	while(cP.Puertos[i_Puerto]->getTope()>cont){
-		if(fecha_Ing==cP.Puertos[i_Puerto]->getArribo(cont)->getfecha()){
-			if(cP.Puertos[i_Puerto]->getTope()>1){
-				cP.Puertos[i_Puerto]->eliminarArribo(cont,cP.Puertos[i_Puerto]->getArribo(cP.Puertos[i_Puerto]->getTope()-1));
-			}else
-				delete cP.Puertos[i_Puerto]->getArribo(cont);
-				cP.Puertos[i_Puerto]->setTope(0);
-				cont++;
-		}else{
-			cont++;
+	else {
+		while (!condicion) {
+			cout << endl << "Ingrese el ID del puerto: ";
+			cin >> id_Puerto;
+			try {
+				verificarPuerto(id_Puerto);
+				condicion = true;
+			}
+			catch (invalid_argument& e) {
+				cout << e.what() << endl;
+			}
 		}
+
+		int dia, mes, anio;
+		bool verificar = false;
+		while(!verificar){
+			cout << "Ingrese el dia: "; cin >> dia;
+			if (0 < dia && dia < 32) {
+				cout << "Ingrese el mes: "; cin >> mes;
+				if (0 < mes && mes < 13) {
+					cout << "Ingrese el anio: "; cin >> anio;
+					if (1900 <= anio)
+						verificar = true;
+				}
+			}
+			if (!verificar) {
+				cout << "La fecha ingresada no es valida, intente de nuevo" << endl;
+			}
+		}
+
+		DtFecha Fecha_Ing = DtFecha(dia, mes, anio);
+		eliminarArribos(id_Puerto, Fecha_Ing);
 	}
-
-
 }
 
-void eliminarArribos(string idPuerto, const DtFecha&fecha){}
+void eliminarArribos(string idPuerto, const DtFecha&fecha){
+	int j_ward = 0; int i_Puerto = 0;
+	bool verificar = false;
+	
+	while ((i_Puerto < cP.topePuertos) && (!verificar)) {
+		if (cP.Puertos[i_Puerto]->getid() == idPuerto) {
+			verificar = true;
+		}
+		else
+			i_Puerto++;
+	}
+	int i_ward=0;
+	while (cP.Puertos[i_Puerto]->getTope()>=i_ward){
+		while (cP.Puertos[i_Puerto]->getTope() > j_ward) {
+			if (fecha == cP.Puertos[i_Puerto]->getArribo(j_ward)->getfecha()) {
+				if ((cP.Puertos[i_Puerto]->getTope() > 1)) {
+					Arribo* arriboF = cP.Puertos[i_Puerto]->getArribo(cP.Puertos[i_Puerto]->getTope() - 1);
+					cP.Puertos[i_Puerto]->eliminarArribo(j_ward, arriboF);
+				}else{
+					delete cP.Puertos[i_Puerto]->getArribo(0);
+					cP.Puertos[i_Puerto]->setTope(0);
+				}
+				cout << j_ward ;
+				j_ward++;
+			}
+			else {
+				j_ward++;
+			}
+		}
+		j_ward=0;
+		i_ward++;
+	}
+}
 
 ////////////////////////////////////////////> Operaciones G <//////////////////////////////////////////////////
 

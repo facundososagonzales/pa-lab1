@@ -21,9 +21,9 @@ DtBarco DtArribo::getBarco() {
 }
 
 ostream& operator <<(ostream& salida, const DtArribo& dta){
-        cout << "Fecha: " << dta.fecha << "\n"
-        "Carga: " << dta.carga << "\n"
-        "--- Barco --- " << dta.barco << endl;
+        cout << "\n--- Barco --- " << endl << dta.barco;
+        cout << "Fecha: " << dta.fecha <<
+        "Carga: " << dta.carga << "\n";
 	return salida;
 }
 
