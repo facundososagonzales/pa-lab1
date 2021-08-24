@@ -18,7 +18,7 @@ public:
     void settamanio(TipoTamanio);
     TipoTamanio gettipoTamanio();
 
-    void arribar();
+    void arribar(float);
 
     ~BarcoPasajeros();
 };

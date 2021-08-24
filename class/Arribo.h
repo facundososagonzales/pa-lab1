@@ -19,6 +19,7 @@ public:
     void setfecha(DtFecha fecha);
     float getcarga();
     void setcarga(float carga);
+    Barco* getBarco();
 
     ~Arribo();
 };

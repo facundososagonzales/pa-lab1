@@ -33,17 +33,29 @@ void Puerto::setfechaCreacion(DtFecha fechaCreacio) {
     this->fechaCreacio=fechaCreacio;
 }
 
-Arribo* Puerto::getArribo(int topeA) {
-    return this->arribos[topeA];
+Arribo* Puerto::getArribo(int n) {
+    return this->arribos[n];
 }
 
 void Puerto::addToArribos(Arribo *a) {
     this->arribos[this->topeA]=a;
-    this->topeA = this->topeA++;
+    this->topeA++;
 }
 
 int Puerto::getTope() {
     return this->topeA;
+}
+
+void Puerto::setTope(int topeA){
+    this->topeA=topeA;
+}
+
+void Puerto::eliminarArribo(int n, Arribo* a){
+    delete this->arribos[n];
+    Arribo* arriboF = new Arribo(a->getfecha(),a->getcarga(),a->getBarco());
+    this->arribos[n]=arriboF;
+    delete a;
+    this->topeA--;
 }
 
 Puerto::~Puerto(){}

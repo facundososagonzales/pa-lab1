@@ -13,7 +13,7 @@ class DtBarco{
         DtBarco(string,string);
         string getnombre();
         string getid();
-        ~DtBarco();
+        virtual ~DtBarco();
 
         friend ostream& operator << (ostream&, const DtBarco&);
 };
